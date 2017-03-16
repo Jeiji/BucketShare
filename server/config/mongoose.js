@@ -22,7 +22,7 @@ var mongoose = require('mongoose'),
 /*
 *  database information
 */
-    dbURI = 'mongodb://localhost/bucket_list';
+    dbURI = 'mongodb://localhost/bucket_share';
 /*
 * Connect to the database
 */
