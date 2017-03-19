@@ -20,13 +20,21 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
 
 
 
-  this.addUsr = function( newUsr , callbackToCtrl ){
+  this.regUsr = function( newUsr , callbackToCtrl ){
     console.log(`Adding`);
-    http.post( '/add_usr' , newUsr ).then( function( res ){
+    http.post( '/reg_usr' , newUsr ).then( function( res ){
       thisUsr = res.data;
       callbackToCtrl( res );
     });
     };
+
+    this.logUsr = function( newUsr , callbackToCtrl ){
+      console.log(`Adding`);
+      http.post( '/log_usr' , newUsr ).then( function( res ){
+        thisUsr = res.data;
+        callbackToCtrl( res );
+      });
+      };
 
     this.idxLogged = function( callbackToCtrl ){
       callbackToCtrl( thisUsr );

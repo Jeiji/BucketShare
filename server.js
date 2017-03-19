@@ -27,16 +27,7 @@ app.use(session({
 
 app.get('/', function(req, res, next) {
   var sesh = req.session
-  if (sesh.views) {
-    sesh.views++
-    res.setHeader('Content-Type', 'text/html')
-    res.write('<p>views: ' + sesh.views + '</p>')
-    res.write('<p>expires in: ' + (sesh.cookie.maxAge / 1000) + 's</p>')
-    res.end()
-  } else {
-    sess.views = 1
-    res.end('welcome to the session demo. refresh!')
-  }
+  console.log(`fart`);
 })
 
 //---------------- DATABASE -------------------
@@ -48,5 +39,5 @@ require("./server/config/routes.js")(app);
 //---------------- SERVER LISTENER -------------------
 const port = 8000;
 app.listen( port , function(){
-  console.log(`Listening to port ${port} for 'Bucket List'`);
+  console.log(`Listening to port ${port} for 'BucketShare'`);
 });

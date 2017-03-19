@@ -9,7 +9,13 @@ app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry' , 'prdctFctr
 
 
   scope.usrLogin = function( usr ){
-    uf.addUsr( usr , function( res ){
+    uf.logUsr( usr , function( res ){
+      location.url('/buckets')
+    });
+  };
+
+  scope.usrRegister = function( usr ){
+    uf.regUsr( usr , function( res ){
       location.url('/buckets')
     });
   };

@@ -8,7 +8,13 @@ module.exports = function( app ){
     usrs.idx( req , res );
   });
 
-  app.post( '/add_usr' , function( req , res ){
+  app.post( '/log_usr' , function( req , res ){
+    console.log(`TO /ADD_USR ROUTES IN BACKEND`);
+    console.log(req.body);
+    usrs.add( req , res );
+  });
+
+  app.post( '/reg_usr' , function( req , res ){
     console.log(`TO /ADD_USR ROUTES IN BACKEND`);
     console.log(req.body);
     usrs.add( req , res );
