@@ -55,13 +55,14 @@ function usrsCtrl(){
           }else{
             console.log(`ADDED USR TO DB!`);
             console.log( addedUsr );
+            login( addedUsr , req.session , function( sesh ){
+              req.session = sesh;
+              console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
+            } );
             res.json( addedUsr );
           };
         });
-        login( foundUsr , req.session , function( sesh ){
-          req.session = sesh;
-          console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
-        } );
+
       }
     });
 
