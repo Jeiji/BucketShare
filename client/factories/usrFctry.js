@@ -37,8 +37,18 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
       };
 
     this.idxLogged = function( callbackToCtrl ){
-      callbackToCtrl( thisUsr );
-      console.log(`Heh`);
+      let logged = {};
+      http.get( '/chk_logged' ).then( function( loggedUsr ){
+        console.log(`ABOUT TO LOG LOGGED USER`,loggedUsr.data);
+        logged = loggedUsr.data
+        console.log(logged);
+        callbackToCtrl( loggedUsr );
+      })
+      .catch( function( reason ){
+        console.log(reason);
+        console.log(`Handling the rejection...`);
+          callbackToCtrl( { nope: 'nada' } );
+      });
     };
 
 };

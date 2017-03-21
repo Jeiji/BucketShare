@@ -16,7 +16,11 @@ app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry' , 'prdctFctr
 
   scope.usrRegister = function( usr ){
     uf.regUsr( usr , function( res ){
-      location.url('/buckets')
+      console.log(`\n\n!!**!!**!!**!!**!!**!!**!!** should return user or not...`,res);
+      if( !res.name ){
+        location.url('/buckets')
+      };
+
     });
   };
 

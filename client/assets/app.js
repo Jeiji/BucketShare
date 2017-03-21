@@ -2,8 +2,8 @@ var app = angular.module('app' , [ 'ngRoute' , 'ngMessages'] );
 app.config(function ($routeProvider) {
   $routeProvider
   .when( '/' , {
-    templateUrl : 'home.html',
-    controller : 'idxCtrl'
+    templateUrl : 'dashboard.html',
+    controller : 'dshbrdCtrl'
   })
   .when( '/customers' , {
     templateUrl : 'customers.html',

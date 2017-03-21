@@ -16,8 +16,9 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
   const idxLogged = function(){
     scope.thisUsr = {};
     uf.idxLogged( function( logged ){
-      scope.thisUsr = logged;
-      console.log(logged);
+      console.log(logged.data);
+      scope.thisUsr = logged.data;
+      console.log( `\n!#!#!# AFTER TRYING TO FIND LOGGED` , scope.thisUsr );
       if( !scope.thisUsr.name ){
         location.url('/dashboard')
         console.log('Sorry');

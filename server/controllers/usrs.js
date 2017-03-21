@@ -5,6 +5,11 @@ const User = mongoose.model( 'User' )
 
 function usrsCtrl(){
 
+  login = function( usr , sesh , backToHTTPCycle ){
+    sesh.usr = usr
+    console.log(`\n\n`,sesh);
+    backToHTTPCycle( sesh );
+  }
 
   this.idx = function( req , res ){
     User.find( {} )
@@ -13,22 +18,38 @@ function usrsCtrl(){
      if( err ){
        console.log(`Error indexing all users from db.`);
      }else{
-       console.log( allUsrs );
+       console.log( `\n\n\n\n\nAll the registered users:\n\n` , allUsrs );
        res.json( allUsrs )
      };
    });
 
   };
 
-  this.add = function( req , res ){
-    let newUsr = req.body
-    User.findOne( { name : newUsr.name } , function( err , data ){
-      if( data ){
-        console.log(`FOUND HIM`);
-        console.log(data);
-        res.json( data )
+  this.log = function( req , res ){
+    const newUsr = req.body
+    console.log(`\n!@#!@#!@#!@#!@#!@#!@#\n` , req.session);
+    User.findOne( { name : newUsr.name , password : newUsr.pass } , function( err , foundUsr ){
+      if( foundUsr ){
+        console.log(`FOUND HIM! Loggin' him in...`);
+        console.log(foundUsr);
+        login( foundUsr , req.session , function( sesh ){
+          req.session = sesh;
+          console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
+        } );
+        res.json( foundUsr )
+      }
+    });
+  };
+
+  this.reg = function( req , res ){
+    const newUsr = req.body
+    User.findOne( { name : newUsr.name } , function( err , foundUsr ){
+      if( foundUsr ){
+        console.log(`\nHE ALREADY EXISTS:\n\n`);
+        console.log(foundUsr);
+        res.json( foundUsr )
       }else{
-        User.create( newUsr , function( err , addedUsr ){
+        User.create( { name : newUsr.name , password : newUsr.pass } , function( err , addedUsr ){
           if( err ){
             console.log(`Error adding new user to db.`);
           }else{
@@ -37,8 +58,13 @@ function usrsCtrl(){
             res.json( addedUsr );
           };
         });
-      };
+        login( foundUsr , req.session , function( sesh ){
+          req.session = sesh;
+          console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
+        } );
+      }
     });
+
 
   };
 

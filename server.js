@@ -22,7 +22,7 @@ app.use(session({
   secret: 'mekele',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false , httpOnly: false , maxAge : 36000000 }
 }))
 
 app.get('/', function(req, res, next) {
