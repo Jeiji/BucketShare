@@ -28,7 +28,6 @@ function ordrsCtrl(){
             console.log(user);
             user.save();
             console.log(`Now adding to User...`);
-
           };
 
 
@@ -44,10 +43,7 @@ function ordrsCtrl(){
               console.log(user);
               user.save();
               console.log(`Now adding to User...`);
-
             };
-
-
           });
         }
       };

@@ -1,7 +1,8 @@
 console.log(`Users Controller up!`);
 
 const mongoose = require('mongoose');
-const User = mongoose.model( 'User' )
+const User = mongoose.model( 'User' );
+const Friendship = mongoose.model( 'Frnd' );
 
 function usrsCtrl(){
 
@@ -25,6 +26,25 @@ function usrsCtrl(){
 
   };
 
+  this.reqFrnd = function( req , res ){
+    let recUserName = req.body.userName,
+        thisUser = req.session.usr;
+        console.log('This is the session user',req.session);
+    console.log(thisUser);
+    User.findOne( { name: recUserName } , function( err , foundUsr ) {
+      if( foundUsr ){
+        Friendship.create({ req: thisUser , rec: foundUsr , acc: 'false' } , function( err , nf ){
+          newFriendship = nf;
+          console.log('New Friendship' , newFriendship);
+          console.log(`Now adding to User...`);
+          res.json( foundUsr );
+        });
+      }else{
+        console.log(`\n NO DICE!\n\n`);
+      }
+    });
+  };
+
   this.log = function( req , res ){
     const newUsr = req.body
     console.log(`\n!@#!@#!@#!@#!@#!@#!@#\n` , req.session);
@@ -34,6 +54,7 @@ function usrsCtrl(){
         console.log(foundUsr);
         login( foundUsr , req.session , function( sesh ){
           req.session = sesh;
+          req.session.save();
           console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
         } );
         res.json( foundUsr )
@@ -62,7 +83,6 @@ function usrsCtrl(){
             res.json( addedUsr );
           };
         });
-
       }
     });
 

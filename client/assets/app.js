@@ -1,4 +1,4 @@
-var app = angular.module('app' , [ 'ngRoute' , 'ngMessages'] );
+var app = angular.module('app' , [ 'ngRoute' , 'ngMessages', 'ngMaterial'] );
 app.config(function ($routeProvider) {
   $routeProvider
   .when( '/' , {
@@ -20,6 +20,10 @@ app.config(function ($routeProvider) {
   .when( '/dashboard' , {
     templateUrl : 'dashboard.html',
     controller : 'dshbrdCtrl'
+  })
+  .when( '/friends' , {
+    templateUrl : '',
+    controller : 'bcktCtrl'
   })
   .otherwise({
     redirectTo : '/'

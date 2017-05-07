@@ -1,4 +1,4 @@
-app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,   function( scope , bf , uf , location ) {
+app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' , '$http',   function( scope , bf , uf , location, http ) {
 
     // const idx = function(){
     //   bf.idx( function(dataFromFactory ){
@@ -42,6 +42,26 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
 
   idx_U();
 
+  const idx_F = function(){
+    bf.idx_F( function( dataFromCF ){
+      scope.friends = dataFromCF
+      console.log(scope.friends);
+    });
+  };
+
+  idx_F();
+
+  scope.confirmFriend = function( requester ){
+    console.log(`\n\nNEW REQUEST CONFIRM WITH `,requester.name);
+    http.post( '/confFriend' , requester ).then(function( res ){
+      console.log('Made a new friend with ',requester.name,'!');
+      idx_F();
+    }).catch(function( reason ){
+      console.log(`Handling http for Conf Friend... Reason:`,reason);
+    });
+  };
+
+
 
 
 
@@ -60,6 +80,9 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     });
     idx_U();
   };
+
+
+
 
 
 }]);

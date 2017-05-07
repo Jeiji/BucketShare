@@ -15,6 +15,9 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
       dbUsers = res.data;
       users = dbUsers
       callbackToCtrl( dbUsers );
+    }).catch( function( reason ){
+      console.log(reason);
+      console.log(`Handling the rejection...`);
     });
   };
 
@@ -25,6 +28,9 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
     http.post( '/reg_usr' , newUsr ).then( function( res ){
       thisUsr = res.data;
       callbackToCtrl( res );
+    }).catch( function( reason ){
+      console.log(reason);
+      console.log(`Handling the rejection...`);
     });
     };
 
@@ -33,6 +39,9 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
       http.post( '/log_usr' , newUsr ).then( function( res ){
         thisUsr = res.data;
         callbackToCtrl( res );
+      }).catch( function( reason ){
+        console.log(reason);
+        console.log(`Handling the rejection...`);
       });
       };
 
@@ -43,8 +52,7 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
         logged = loggedUsr.data
         console.log(logged);
         callbackToCtrl( loggedUsr );
-      })
-      .catch( function( reason ){
+      }).catch( function( reason ){
         console.log(reason);
         console.log(`Handling the rejection...`);
           callbackToCtrl( { nope: 'nada' } );

@@ -16,13 +16,15 @@ app.use(bodyParser.json());
 app.use( express.static( path.join( __dirname , './client')));
 app.use( express.static( path.join( __dirname , './client/partials')));
 app.use( express.static( path.join( __dirname , './bower_components')));
+app.set('views', __dirname + '/client/partials/');
+app.set('view engine', 'ejs')
 
 //---------------- SESSIONS -------------------
 app.use(session({
   secret: 'mekele',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false , httpOnly: false , maxAge : 36000000 }
+  cookie: { secure: false , httpOnly: false }
 }))
 
 app.get('/', function(req, res, next) {

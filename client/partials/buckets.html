@@ -11,12 +11,19 @@ New Bucket:
   <textarea style="display:block" ng-model="newBckt.desc" rows="2" cols="80"></textarea>
   Tag a User:
   <select  style="display:block" ng-model="newBckt.usrId2">
-    <option ng-if="(usr._id !== thisUsr._id)" ng-repeat="usr in users" value="{{ usr._id }}" >{{ usr.name }}</option>
+    <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.req._id == thisUsr._id? friend.rec._id : friend.req._id }}" >{{ friend.req._id == thisUsr._id? friend.rec.name : friend.req.name }}</option>
   </select>
 
   <input style="display:block" type="submit" value="Queue Bucket">
 </form>
 
+<a href="/friends">Add friends!</a>
+
+<h2>Here are the friend Requests</h2>
+<span  ng-repeat='friendship in friends' ng-if="!friendship.acc && friendship.req._id != thisUsr._id">
+        <h3>{{friendship.req.name}}</h3>
+       <button ng-click="confirmFriend( friendship.req )" type="button" name="button">Confirm!</button>
+</span>
 
 <h2>Here are the buckets</h2>
 Not done yet:

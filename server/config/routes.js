@@ -2,6 +2,7 @@ console.log(`Routes are up!`);
 const usrs = require('../controllers/usrs.js')
 // const bckts = require('../controllers/bckts.js')
 const bckts = require('../controllers/bckts.js')
+const frnds = require('../controllers/friends.js')
 
 // Check for bein' logged in
 function ifLogged( req , res ){
@@ -20,6 +21,10 @@ module.exports = function( app ){
     }else{
       res.redirect('/');
     }
+  });
+
+  app.get( '/friends' , function( req , res ){
+    res.render('friends');
   });
 
   app.get( '/usrs' , function( req , res ){
@@ -41,6 +46,12 @@ module.exports = function( app ){
     console.log(`TO /REG_USR ROUTES IN BACKEND`);
     console.log(req.session);
     usrs.reg( req , res );
+  });
+
+  app.post( '/friendReq' , function( req , res ){
+    console.log(`TO /FRIENDREQ ROUTES IN BACKEND`);
+    console.log(req.body);
+    usrs.reqFrnd( req , res );
   });
 
   app.delete( '/del_usr_:victimId' , function( req , res ){
@@ -83,6 +94,20 @@ module.exports = function( app ){
   app.get( '/bckts' , function( req , res ){
     console.log(`TO / ROUTES IN BACKEND`);
     bckts.idx( req , res );
+  });
+
+  app.get( '/frndshps' , function( req , res ){
+    console.log(`TO /FRNDSHPS ROUTES IN BACKEND`);
+    frnds.idx( req , res );
+  });
+
+  app.post( '/confFriend' , function( req , res ){
+    console.log('\n\nChicking for confirmation in ROUTES',req.body);
+    frnds.conf( req , res );
+  });
+
+  app.delete( '/rejectFriendReq' , function( req , res ){
+    frnds.delete( req , res );
   });
 
   app.delete( '/del_bckt_:victimId' , function( req , res ){
