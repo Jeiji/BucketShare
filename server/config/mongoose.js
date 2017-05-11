@@ -22,7 +22,7 @@ var mongoose = require('mongoose'),
 /*
 *  database information
 */
-    dbURI = 'mongodb://localhost/bucket_share_friends';
+    dbURI = 'mongodb://heroku_6wrcl49j:2fr1p7j1skucplb0h32oq4ta8a@ds137891.mlab.com:37891/heroku_6wrcl49j';
 /*
 * Connect to the database
 */
