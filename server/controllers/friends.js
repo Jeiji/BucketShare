@@ -54,7 +54,7 @@ function ordrsCtrl(){
   this.idx = function( req , res ){
     let allFriends = [];
     console.log('\nSession User\n',req.session.usr);
-    Friendship.find( { req: req.session.usr }).populate('rec').populate('req').exec( function( err , theirFriends ){
+    Friendship.find( { ref: req.session.usr }).populate('rec').populate('ref').exec( function( err , theirFriends ){
       if( err ){
         console.log(`Error indexing all orders from db.`);
       }else{
@@ -64,7 +64,7 @@ function ordrsCtrl(){
         console.log('\n\nAll friends so far:',allFriends);
       };
     }).then( function(){
-      Friendship.find( { rec: req.session.usr }).populate('rec').populate('req').exec( function( err , theirFriends ){
+      Friendship.find( { rec: req.session.usr }).populate('rec').populate('ref').exec( function( err , theirFriends ){
         if( err ){
           console.log(`Error indexing all orders from db.`);
         }else{
@@ -89,7 +89,7 @@ function ordrsCtrl(){
   this.conf = function( req , res ){
     console.log('Chicking req.body for conf friend for: ',req.body);
     console.log('Also checking this User: ',req.session.usr);
-    Friendship.findOne( { req : req.body , rec : req.session.usr } , function( err , frndshp ){
+    Friendship.findOne( { ref : req.body , rec : req.session.usr } , function( err , frndshp ){
       if( err ){
         console.log(err.errors);
       }else{

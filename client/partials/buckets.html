@@ -1,4 +1,4 @@
-<h1>{{thisUsr.name}}'s Buckets!</h1>
+  <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s Buckets!</h1>
 
 <a href="/logout">LOGOUT</a>
 
@@ -6,12 +6,13 @@ New Bucket:
 <form ng-submit="addBckt( newBckt )">
 
   Name:
-  <input style="display:block" type="text" ng-model="newBckt.name" value="">
+  <input class="resettable" style="display:block" type="text" ng-model="newBckt.name" value="">
   Description
-  <textarea style="display:block" ng-model="newBckt.desc" rows="2" cols="80"></textarea>
+  <textarea class="resettable" style="display:block" ng-model="newBckt.desc" rows="2" cols="80"></textarea>
   Tag a User:
-  <select  style="display:block" ng-model="newBckt.usrId2">
-    <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.req._id == thisUsr._id? friend.rec._id : friend.req._id }}" >{{ friend.req._id == thisUsr._id? friend.rec.name : friend.req.name }}</option>
+  <select class="resetSelect"  style="display:block" ng-model="newBckt.usrId2">
+    <option class="defaultSelect" selected="selected" value="" >Just me!</option>
+    <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.ref._id == thisUsr._id? friend.rec._id : friend.ref._id }}" >{{ friend.ref._id == thisUsr._id? friend.rec.name : friend.ref.name }}</option>
   </select>
 
   <input style="display:block" type="submit" value="Queue Bucket">
@@ -20,9 +21,9 @@ New Bucket:
 <a href="/friends">Add friends!</a>
 
 <h2>Here are the friend Requests</h2>
-<span  ng-repeat='friendship in friends' ng-if="!friendship.acc && friendship.req._id != thisUsr._id">
-        <h3>{{friendship.req.name}}</h3>
-       <button ng-click="confirmFriend( friendship.req )" type="button" name="button">Confirm!</button>
+<span  ng-repeat='friendship in friends' ng-if="!friendship.acc && friendship.ref._id != thisUsr._id">
+        <h3>{{friendship.ref.name}}</h3>
+       <button ng-click="confirmFriend( friendship.ref )" type="button" name="button">Confirm!</button>
 </span>
 
 <h2>Here are the buckets</h2>

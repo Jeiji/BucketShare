@@ -71,6 +71,12 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     bf.addBckt( newBckt );
     idx_U();
 
+    $('.resettable').val('');
+    scope.newBckt = {}
+    $('.defaultSelect').prop('selected', function() {
+        return this.defaultSelected;
+    });
+
   };
 
   scope.doBckt = function( bckt ){
@@ -80,6 +86,7 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     });
     idx_U();
   };
+
 
 
 

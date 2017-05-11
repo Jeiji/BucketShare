@@ -1,0 +1,52 @@
+body{
+  /*background-color: #ffe9c2 !important;*/
+}
+
+#login{
+  padding: 20px;
+  margin-top: 50px;
+  background-color: #f7b947;
+  border: 8px solid #ffa500;
+  border-radius: 8px;
+}
+
+.auth-form input, .auth-form p{
+  display: inline-block;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: none;
+  border: none;
+}
+
+.auth-form input{
+  margin: 0 0 10px 0;
+  height: 40px;
+  padding: 5px;
+  font-size: 18px;
+  text-align: center;
+  outline: none;
+}
+
+
+
+.auth-form p{
+  margin: 0 0 5px 0;
+}
+
+.auth-form input[type=submit]{
+  width: 100%;
+  BACKGROUND-COLOR: #55a055;
+  color: white;
+  font-size: 18px;
+  letter-spacing: 1px;
+  /* font-weight: bold; */
+  padding: 5px;
+}
+
+.loginError{
+  color: white;
+  background-color: #f54747;
+  border-radius: 4px;
+  padding: 5px;
+  font-weight: bold;
+}

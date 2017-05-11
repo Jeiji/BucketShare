@@ -57,14 +57,24 @@
               let friendshipsToSkip = res.data;
               console.log(' Logging friendshipsToSkip ',friendshipsToSkip);
               for (let i = 0; i < friendshipsToSkip.length; i++) {
-                if ( friendshipsToSkip[i].rec = logged ) {
-                  let thisFriendsName = friendshipsToSkip[i].req.name
-                  console.log(thisFriendsName);
-                  s.possibleFriends[thisFriendsName] = true;
-                }else{
-                  let thisFriendsName = friendshipsToSkip[i].rec.name
-                  s.possibleFriends[thisFriendsName] = true;
-                }
+
+                  // if ( friendshipsToSkip[i].rec = logged ) {
+                  //   let thisFriendsName = friendshipsToSkip[i].ref.name
+                  //   console.log('Recipient. Sender:',thisFriendsName);
+                  //   s.possibleFriends[thisFriendsName] = true;
+                  // }else{
+                  //   let thisFriendsName = friendshipsToSkip[i].rec.name
+                  //   console.log('Sender. Recipient:',thisFriendsName);
+                  //   s.possibleFriends[thisFriendsName] = true;
+                  // }
+
+                  if ( !(friendshipsToSkip[i].ref.name in s.possibleFriends)) {
+                      s.possibleFriends[friendshipsToSkip[i].ref.name] = true
+                  }
+                  if ( !(friendshipsToSkip[i].rec.name in s.possibleFriends)) {
+                      s.possibleFriends[friendshipsToSkip[i].rec.name] = true
+                  }
+
 
               }
               self.states   = loadUsers();
@@ -135,10 +145,13 @@
                  console.log(s.possibleFriends);
                  console.log(users[i].name);
                  console.log('Not in!');
-                 if ( i == users.length-1 ) {
+
+                 if ( !self.userNames ) {
+                   console.log('last one!');
                    self.userNames += ( users[i].name)
                  }else{
-                   self.userNames += ( users[i].name + ', ')
+                   console.log('not last one',i,users.length);
+                   self.userNames += (', ' + users[i].name )
                 }
 
               }
@@ -173,7 +186,10 @@
                console.log(reason);
                console.log(`Handling rejection`);
              });
+             self.idx_F();
            };
+
+
 
 
         }

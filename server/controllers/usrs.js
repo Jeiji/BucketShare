@@ -27,28 +27,58 @@ function usrsCtrl(){
   };
 
   this.reqFrnd = function( req , res ){
+    console.log('\n\nCHECKING FOR REQ FRIEND',req.body);
     let recUserName = req.body.userName,
-        thisUser = req.session.usr;
-        console.log('This is the session user',req.session);
-    console.log(thisUser);
+        recUser = {};
+        // thisUser = req.session.usr;
+        console.log('This is the session user',req.session.usr);
+    // console.log(thisUser);
+
+    //populate rec user...
     User.findOne( { name: recUserName } , function( err , foundUsr ) {
       if( foundUsr ){
-        Friendship.create({ req: thisUser , rec: foundUsr , acc: 'false' } , function( err , nf ){
-          newFriendship = nf;
-          console.log('New Friendship' , newFriendship);
-          console.log(`Now adding to User...`);
-          res.json( foundUsr );
-        });
-      }else{
-        console.log(`\n NO DICE!\n\n`);
+        console.log('\n\nFOUND USER',foundUsr);
+        recUser = foundUsr
       }
+      // repopulate ref user...
+      User.findOne( { name: req.session.usr.name } , function( err , foundUsr ) {
+        if( foundUsr ){
+          console.log('\n\nFOUND REQUESTER',foundUsr);
+          thisUser = foundUsr
+
+          Friendship.findOne({ ref: thisUser , rec: recUser },function( err , fship ){
+            console.log('\n\nJust checking this user when checkint to see if rq is already made...',thisUser);
+            if ( !fship ) {
+              Friendship.create({ ref: thisUser , rec: recUser , acc: 'false' } , function( err , nf ){
+                newFriendship = nf;
+                console.log('New Friendship' , newFriendship);
+                console.log(`Now adding to User...`);
+                res.json( newFriendship );
+              });
+            }else {
+              console.log('\n\n\n\n FRIENDSHIP ALREADY EXISTS\n\n');
+              res.json( 'FRIENDSHIP ALREADY EXISTS' )
+            }
+          });
+
+        }
+      });
     });
+
+
+
+
+
+
   };
 
   this.log = function( req , res ){
-    const newUsr = req.body
+    const usr = req.body
+    if ( usr.name ) {
+      usr.name = usr.name.toLowerCase();
+    }
     console.log(`\n!@#!@#!@#!@#!@#!@#!@#\n` , req.session);
-    User.findOne( { name : newUsr.name , password : newUsr.pass } , function( err , foundUsr ){
+    User.findOne( { name : usr.name , password : usr.pass } , function( err , foundUsr ){
       if( foundUsr ){
         console.log(`FOUND HIM! Loggin' him in...`);
         console.log(foundUsr);
@@ -58,12 +88,15 @@ function usrsCtrl(){
           console.log( `\n*&*&*&*&*&*&*&*&*&*&*&*&*&*&\n\nThis is the new session\n` , req.session );
         } );
         res.json( foundUsr )
+      }else{
+        res.json( {err:`He doesn't exist!`} )
       }
     });
   };
 
   this.reg = function( req , res ){
     const newUsr = req.body
+    newUsr.name = newUsr.name.toLowerCase()
     User.findOne( { name : newUsr.name } , function( err , foundUsr ){
       if( foundUsr ){
         console.log(`\nHE ALREADY EXISTS:\n\n`);

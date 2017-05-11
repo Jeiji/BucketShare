@@ -1,4 +1,4 @@
-app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry' , 'prdctFctry' , 'usrFctry' ,  function( scope , location , of , pf , uf ) {
+app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry'  , 'usrFctry' ,  function( scope , location , of , uf ) {
 
   const idxUsrs = function(){
     uf.idx( function( allUsrs ){
@@ -9,8 +9,14 @@ app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry' , 'prdctFctr
 
 
   scope.usrLogin = function( usr ){
+    console.log(scope.user);
     uf.logUsr( usr , function( res ){
-      location.url('/buckets')
+      if (res.data.err ) {
+        scope.loginError = res.data.err
+        console.log(scope.loginError);
+      }else {
+        location.url('/buckets')
+      }
     });
   };
 
@@ -24,6 +30,6 @@ app.controller('dshbrdCtrl' , ['$scope' , '$location' , 'bcktFctry' , 'prdctFctr
     });
   };
 
-  
+
 
 }]);
