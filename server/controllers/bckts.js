@@ -10,7 +10,7 @@ function ordrsCtrl(){
     let ab = {};
     let nb = req.body;
     console.log(nb);
-    Bckt.create( { name : nb.name , desc : nb.desc , done : '' } , function( err , data ){
+    Bckt.create( { name : nb.name , desc : nb.desc , done : '', creator : nb.usrId } , function( err , data ){
       console.log(`******************************`);
       console.log(nb);
       if( err ){

@@ -1,58 +1,111 @@
-  <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s Buckets!</h1>
+<nav class="navbar navbar-default header-bar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <!-- <img alt="Brand" src="..."> -->
+        <p class="">Onus</p>
+      </a>
+    </div>
+    <a class=" on-orange btn btn-default navbar-right" href="/logout">LOGOUT</a>
+    <ul class="nav navbar-nav">
+        <li class="active"><a href="#!/buckets">HOME <span class="sr-only">(current)</span></a></li>
+        <li><a href="/friends">ADD FRIENDS</a></li>
+        <div ng-if="requests.length > 0" class="fr"></div>
+        <li class="dropdown">
+          <a href="" ng-if="requests.length > 0" class=" dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">NEW FRIEND REQUESTS! <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li  ng-repeat='friendship in requests' >
+                    <p class="conf-friend">{{friendship.ref.name}}</p>
+                   <button class="conf-friend" ng-click="confirmFriend( friendship.ref )" type="button" name="button">Confirm!</button>
+                   <div class="clearboth"></div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+  </div>
+</nav>
 
-<a href="/logout">LOGOUT</a>
+<div class="container">
 
-New Bucket:
-<form ng-submit="addBckt( newBckt )">
 
-  Name:
-  <input class="resettable" style="display:block" type="text" ng-model="newBckt.name" value="">
-  Description
-  <textarea class="resettable" style="display:block" ng-model="newBckt.desc" rows="2" cols="80"></textarea>
-  Tag a User:
-  <select class="resetSelect"  style="display:block" ng-model="newBckt.usrId2">
-    <option class="defaultSelect" selected="selected" value="" >Just me!</option>
-    <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.ref._id == thisUsr._id? friend.rec._id : friend.ref._id }}" >{{ friend.ref._id == thisUsr._id? friend.rec.name : friend.ref.name }}</option>
-  </select>
+    <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s Buckets!</h1>
 
-  <input style="display:block" type="submit" value="Queue Bucket">
-</form>
 
-<a href="/friends">Add friends!</a>
+    <div class="container col-xs-12 col-md-6">
 
-<h2>Here are the friend Requests</h2>
-<span  ng-repeat='friendship in friends' ng-if="!friendship.acc && friendship.ref._id != thisUsr._id">
-        <h3>{{friendship.ref.name}}</h3>
-       <button ng-click="confirmFriend( friendship.ref )" type="button" name="button">Confirm!</button>
-</span>
+      <div class="incomplete-tasks">
+          <h2>Tasks to do:</h2>
+          <div  ng-repeat='user in users'>
+            <span ng-if='( user._id == thisUsr._id )'>
+              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator == thisUsr._id )" >
+                <label class="task" ><input  ng-click='doBckt( bckt )'  type="checkbox" >
+                 <h4>{{ bckt.name }}</h4> <h5>{{ bckt.desc }}</h5></label>
 
-<h2>Here are the buckets</h2>
-Not done yet:
-<div  ng-repeat='user in users'>
-  <span ng-if='( user._id == thisUsr._id )'>
-    <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done )" >
-      <input  ng-click='doBckt( bckt )'  type="checkbox" >
-       {{ bckt.name }}<br>
-    </span>
-  </span>
-</div>
+              </span>
+            </span>
+          </div>
+      </div>
 
-Done!:
-<div  ng-repeat='user in users'>
-  <span ng-if='( user._id == thisUsr._id )'>
-    <span ng-repeat='bckt in user.buckets' ng-if="( bckt.done )" >
-      <input  ng-click='doBckt( bckt )'  type="checkbox" checked >
-       {{ bckt.name }}<br>
-    </span>
-  </span>
-</div>
-<hr>
+      <div class="incomplete-tasks">
+          <h2>Not yours...</h2>
+          <div  ng-repeat='user in users'>
+            <span ng-if='( user._id == thisUsr._id )'>
+              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator != thisUsr._id )" >
+                <label disabled='true' class="notyourtask" ><input  ng-click='doBckt( bckt )' disabled="true"  type="checkbox" >
+                 <h4>{{ bckt.name }}</h4> <h5>{{ bckt.desc }}</h5></label>
 
+              </span>
+            </span>
+          </div>
+      </div>
+
+      <h3>Completed Tasks</h3>
+      <div class="completed-tasks"  ng-repeat='user in users'>
+        <span ng-if='( user._id == thisUsr._id )'>
+          <span ng-repeat='bckt in user.buckets' ng-if="( bckt.done )" >
+            <input  ng-click='doBckt( bckt )'  type="checkbox" checked >
+             {{ bckt.name }}<br>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="container add-bucket col col-xs-12 col-md-3 col-md-offset-2">
+
+
+        <h3>Add a new task!</h3>
+        <form class="new-bucket" ng-submit="addBckt( newBckt )">
+
+          Name:
+          <input class="resettable" style="display:block" type="text" ng-model="newBckt.name" value="">
+          Description
+          <textarea class="resettable" style="display:block" ng-model="newBckt.desc" rows="4" cols="80"></textarea>
+          Who will hold you accountable?
+          <select class="resetSelect"  style="display:block" ng-model="newBckt.usrId2">
+            <option class="defaultSelect" selected="selected" value="" >Just me!</option>
+            <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.ref._id == thisUsr._id? friend.rec._id : friend.ref._id }}" >{{ friend.ref._id == thisUsr._id? friend.rec.name : friend.ref.name }}</option>
+          </select>
+
+          <input style="display:block" type="submit" value="Queue Bucket">
+        </form>
+    </div>
 <!--
-  <span ng-repeat='bckt in users[0].buckets' >
-    <input ng-if='( user._id != thisUsr._id )&&( !bckt.done )'  ng-click='doBckt( bckt )'  type="checkbox"  disabled>
-    <input ng-if='( user._id != thisUsr._id )&&( bckt.done )'  ng-click='doBckt( bckt )'  type="checkbox"  disabled checked>
-     {{ bckt.name }}GOGOGOGO<br>
-  </span>
+    <h2>Here are the friend Requests</h2>
+    <span  ng-repeat='friendship in friends' ng-if="!friendship.acc && friendship.ref._id != thisUsr._id">
+            <h3>{{friendship.ref.name}}</h3>
+           <button ng-click="confirmFriend( friendship.ref )" type="button" name="button">Confirm!</button>
+    </span>
 
 -->
+
+
+
+    <!--
+      <span ng-repeat='bckt in users[0].buckets' >
+        <input ng-if='( user._id != thisUsr._id )&&( !bckt.done )'  ng-click='doBckt( bckt )'  type="checkbox"  disabled>
+        <input ng-if='( user._id != thisUsr._id )&&( bckt.done )'  ng-click='doBckt( bckt )'  type="checkbox"  disabled checked>
+         {{ bckt.name }}GOGOGOGO<br>
+      </span>
+
+    -->
+</div>

@@ -45,7 +45,14 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
   const idx_F = function(){
     bf.idx_F( function( dataFromCF ){
       scope.friends = dataFromCF
+      scope.requests = [];
       console.log(scope.friends);
+      for (let i = 0; i < scope.friends.length; i++) {
+        if ( !scope.friends[i].acc && scope.friends[i].ref._id != scope.thisUsr._id ) {
+          scope.requests.push( scope.friends[i] );
+          console.log(scope.requests);
+        }
+      }
     });
   };
 

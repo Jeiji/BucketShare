@@ -6,6 +6,7 @@ BcktSchema = new mongoose.Schema(
   {
     name : { type : String , minlength : 3 , required : true },
     desc : { type : String , minlength : 5 ,  required : true },
+    creator : { type : String , minlength : 5 ,  required : true },
     done : { type : String },
   } ,
   { timestamps : true });

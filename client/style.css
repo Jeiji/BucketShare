@@ -2,6 +2,10 @@ body{
   /*background-color: #ffe9c2 !important;*/
 }
 
+a:hover{
+  text-decoration: none;
+}
+
 #login{
   padding: 20px;
   margin-top: 50px;
@@ -49,4 +53,179 @@ body{
   border-radius: 4px;
   padding: 5px;
   font-weight: bold;
+}
+
+
+/* NavBar Design */
+
+
+.navbar-brand p{
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.navbar-default{
+  background-color: orange;
+  background-image: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0 -1px;
+  padding-right: 50px;
+}
+
+a.on-orange{
+  background-color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: orange !important;
+  border-radius: 4px;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  margin: 10px;
+}
+
+a.on-orange:hover{
+  background-color: #fffaf0;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #ce8500;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    color: #ffeecf;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #ce8500;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: #fff;
+    background-color: #cc8300;
+}
+
+.navbar-nav>li>.dropdown-menu {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: none;
+    background-color: orange;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    padding: 10px;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a {
+  background-image: none;
+}
+
+.conf-friend{
+  display: inline-block;
+}
+
+button.conf-friend{
+  background-color: #37b310;
+  border: none;
+  margin: 4px;
+  border-radius: 4px;
+  float: right;
+  color: white;
+}
+
+.clearboth{
+  clear: both;
+}
+
+p.conf-friend{
+  margin: 4px 4px 4px 10px;
+  /* float: left; */
+  color: white;
+  font-weight: bold;
+}
+
+.fr{
+  display: inline-block;
+  border-radius: 50%;
+  background-color: red;
+  height: 10px;
+  width: 10px;
+  margin-left: -10px;
+  margin-top: 10px;
+}
+
+.add-bucket{
+  background: #ffe1aa;
+  padding: 24px;
+  BORDER: 3px solid orange;
+  border-radius: 8px;
+}
+
+.new-bucket textarea{
+  width: 100%;
+  height: 60px !important;
+}
+
+.new-bucket input{
+  margin: 0 0 10px 0;
+  height: 40px;
+  padding: 5px;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.new-bucket input[type=submit]{
+  background-color: #489a00;
+  margin: 20px 0;
+  color: white;
+  width: 100%;
+}
+
+.new-bucket textarea {
+    margin: 0 0 10px 0;
+    height: 40px;
+    padding: 5px;
+    font-size: 14;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+
+.task{
+  background-color: #ffe1aa;
+  padding: 20px;
+  display: block;
+  width: 80%;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.notyourtask{
+  background-color: #eae5db;
+  padding: 20px;
+  display: block;
+  width: 80%;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.incomplete-tasks{
+  padding: 10px;
+  border-bottom: 4px solid orange;
+}
+
+.completed-tasks{
+  padding: 10px;
 }
