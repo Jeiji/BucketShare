@@ -68,6 +68,16 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     });
   };
 
+  scope.denyFriend = function( requester ){
+    console.log(`\n\nNEW REQUEST denial... WITH `,requester.name);
+    http.post( '/denyFriend' , requester ).then(function( res ){
+      console.log('D-nied friendship to ',requester.name,'!');
+      idx_F();
+    }).catch(function( reason ){
+      console.log(`Handling http for Conf Friend... Reason:`,reason);
+    });
+  };
+
 
 
 
@@ -75,8 +85,12 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
   scope.addBckt = function( newBckt ){
     scope.newBckt.usrId = scope.thisUsr._id;
     console.log(newBckt);
-    bf.addBckt( newBckt );
+    bf.addBckt( newBckt , function(){
+      idx_U();
+    } );
     idx_U();
+
+
 
     $('.resettable').val('');
     scope.newBckt = {}

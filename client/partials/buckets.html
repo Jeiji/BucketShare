@@ -17,6 +17,7 @@
             <li  ng-repeat='friendship in requests' >
                     <p class="conf-friend">{{friendship.ref.name}}</p>
                    <button class="conf-friend" ng-click="confirmFriend( friendship.ref )" type="button" name="button">Confirm!</button>
+                   <button class="conf-friend" ng-click="denyFriend( friendship.ref )" type="button" name="button">Deny</button>
                    <div class="clearboth"></div>
             </li>
           </ul>
@@ -28,7 +29,7 @@
 <div class="container">
 
 
-    <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s Buckets!</h1>
+    <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s onus!</h1>
 
 
     <div class="container col-xs-12 col-md-6">
@@ -37,9 +38,9 @@
           <h2>Tasks to do:</h2>
           <div  ng-repeat='user in users'>
             <span ng-if='( user._id == thisUsr._id )'>
-              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator == thisUsr._id )" >
+              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator._id == thisUsr._id )" >
                 <label class="task" ><input  ng-click='doBckt( bckt )'  type="checkbox" >
-                 <h4>{{ bckt.name }}</h4> <h5>{{ bckt.desc }}</h5></label>
+                 <h4>{{ bckt.name }}</h4><h6>{{ bckt.desc }}</h6></label>
 
               </span>
             </span>
@@ -50,9 +51,9 @@
           <h2>Not yours...</h2>
           <div  ng-repeat='user in users'>
             <span ng-if='( user._id == thisUsr._id )'>
-              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator != thisUsr._id )" >
+              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator._id != thisUsr._id )" >
                 <label disabled='true' class="notyourtask" ><input  ng-click='doBckt( bckt )' disabled="true"  type="checkbox" >
-                 <h4>{{ bckt.name }}</h4> <h5>{{ bckt.desc }}</h5></label>
+                 <h4>{{ bckt.name }}</h4><h5>For {{ bckt.creator.name }}</h5><h6>{{ bckt.desc }}</h6></label>
 
               </span>
             </span>

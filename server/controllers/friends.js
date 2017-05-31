@@ -102,25 +102,17 @@ function ordrsCtrl(){
   };
 
   this.delete = function( req , res ){
-    console.log(req.params);
-    let prdctIdToAdj = {};
-    let qty = 0;
-    Bckt.findOne( { _id : req.params.victimId } , function( err , ordr ){
+    console.log('logging friend to deny',req.body);
+    console.log('Chicking req.body for deny friend for: ',req.body);
+    console.log('Also checking this User: ',req.session.usr);
+    Friendship.findOne( { ref : req.body , rec : req.session.usr } , function( err , frndshp ){
       if( err ){
-        console.log(`Couldn't adjust product inventories`);
+        console.log(err.errors);
       }else{
-      console.log(`FOUND THE ONE I WANT TO DELETE`);
-      prdctIdToAdj = ordr._product;
-      qty = ordr.qty;
-      Bckt.remove( { _id : req.params.victimId } , function( err , deletedOrdr ){
-          if( err ){
-            console.log(`Couldn't delete`);
-          }else{
-            console.log(`GETTING HERE AFWLKJAFWEL; KAFF ;LKDJS ;ASLDJKF ;ASDLFJK AS;DLFKJ AS;DLFKJ ASD;FLJK AS`);
-            // res.json( deletedOrdr );
-            res.redirect('/rep_inv/'+prdctIdToAdj+'/'+qty)
-          };
-        });
+        console.log(`Bout to DO it, son! Denying friendship!`);
+        Friendship.remove( { ref : frndshp.ref , rec : frndshp.rec } );
+        frndshp.save();
+        res.json( { success : true } )
       };
     });
 

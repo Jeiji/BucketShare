@@ -15,6 +15,7 @@ function usrsCtrl(){
   this.idx = function( req , res ){
     User.find( {} )
     .populate('buckets')
+    .populate('creator')
     .exec( function( err , allUsrs ){
      if( err ){
        console.log(`Error indexing all users from db.`);

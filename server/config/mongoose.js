@@ -22,7 +22,8 @@ var mongoose = require('mongoose'),
 /*
 *  database information
 */
-    dbURI = 'mongodb://heroku_6wrcl49j:2fr1p7j1skucplb0h32oq4ta8a@ds137891.mlab.com:37891/heroku_6wrcl49j';
+    // dbURI = 'mongodb://heroku_6wrcl49j:2fr1p7j1skucplb0h32oq4ta8a@ds137891.mlab.com:37891/heroku_6wrcl49j';
+    dbURI = 'mongodb://localhost/onus-app';
 /*
 * Connect to the database
 */

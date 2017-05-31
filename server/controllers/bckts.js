@@ -9,51 +9,63 @@ function ordrsCtrl(){
   this.add = function( req , res ){
     let ab = {};
     let nb = req.body;
+    let maker = {};
     console.log(nb);
-    Bckt.create( { name : nb.name , desc : nb.desc , done : '', creator : nb.usrId } , function( err , data ){
-      console.log(`******************************`);
-      console.log(nb);
-      if( err ){
-        console.log(`Error adding new order to DB`);
-        console.log(err);
-      }else{
-        console.log(`DID IT, adding to users...`);
-        ab = data;
-        User.findOne( { _id : nb.usrId } , function( err , user ){
+    User.findOne( { _id : nb.usrId } , function( err , user ){
+      if (err) {
+        res.json( err );
+      }else {
+        maker = user;
+        console.log('This is the bucket maker: ' , maker );
+        Bckt.create( { name : nb.name , desc : nb.desc , done : '', creator : maker } , function( err , data ){
+          console.log(`******************************`);
+          console.log(nb);
           if( err ){
-            console.log(err.errors);
+            console.log(`Error adding new order to DB`);
+            console.log(err);
           }else{
-            console.log(ab);
-            user.buckets.push( ab );
-            console.log(user);
-            user.save();
-            console.log(`Now adding to User...`);
+            console.log(`DID IT, adding to users...`);
+            ab = data;
+            User.findOne( { _id : nb.usrId } , function( err , user ){
+              if( err ){
+                console.log(err.errors);
+              }else{
+                console.log(ab);
+                user.buckets.push( ab );
+                console.log(user);
+                user.save();
+                console.log(`Now adding to User...`);
+              };
+
+
+            });
+            if( nb.usrId2 ){
+              console.log(`++++++++++++++++++ DON'T FORGET ME! (${ nb.usrId2 }) ++++++++++++++++++`);
+              User.findOne( { _id : nb.usrId2 } , function( err , user ){
+                if( err ){
+                  console.log(err.errors);
+                }else{
+                  console.log(ab);
+                  user.buckets.push( ab );
+                  console.log(user);
+                  user.save();
+                  console.log(`Now adding to User...`);
+                };
+              });
+            }
           };
-
-
         });
-        if( nb.usrId2 ){
-          console.log(`++++++++++++++++++ DON'T FORGET ME! (${ nb.usrId2 }) ++++++++++++++++++`);
-          User.findOne( { _id : nb.usrId2 } , function( err , user ){
-            if( err ){
-              console.log(err.errors);
-            }else{
-              console.log(ab);
-              user.buckets.push( ab );
-              console.log(user);
-              user.save();
-              console.log(`Now adding to User...`);
-            };
-          });
-        }
-      };
+      }
     });
+    console.log( maker );
+
   };
 
   this.idx = function( req , res ){
     Bckt.find( {} )
       .populate('_customer')
       .populate('_product')
+      .populate('creator')
       .exec(function( err , allOrdrs ){
       if( err ){
         console.log(`Error indexing all orders from db.`);

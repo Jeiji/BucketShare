@@ -25,13 +25,14 @@ app.factory( 'bcktFctry' , [ '$http' , function( http ){
       });
     };
 
-    this.addBckt = function( newBckt ){
+    this.addBckt = function( newBckt, callback ){
       http.post( '/add_bckt' , newBckt ).then( function( res ){
         console.log(res);
       }).catch( function( reason ){
         console.log(reason);
         console.log(`Handling the rejection...`);
       });
+      callback();
     };
 
     this.delOrdr = function( victimId , callbackToCtrl ){

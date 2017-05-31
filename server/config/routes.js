@@ -106,6 +106,11 @@ module.exports = function( app ){
     frnds.conf( req , res );
   });
 
+  app.post( '/denyFriend' , function( req , res ){
+    console.log('\n\nChicking for denial in ROUTES',req.body);
+    frnds.delete( req , res );
+  });
+
   app.delete( '/rejectFriendReq' , function( req , res ){
     frnds.delete( req , res );
   });
