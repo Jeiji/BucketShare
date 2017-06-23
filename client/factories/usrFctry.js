@@ -35,7 +35,7 @@ app.factory( 'usrFctry' , [ '$http' , function( http ){
     };
 
     this.logUsr = function( newUsr , callbackToCtrl ){
-      console.log(`Adding`);
+      console.log(`Loggin in...`);
       http.post( '/log_usr' , newUsr ).then( function( res ){
         thisUsr = res.data;
         callbackToCtrl( res );

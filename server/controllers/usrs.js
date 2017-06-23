@@ -24,8 +24,24 @@ function usrsCtrl(){
        res.json( allUsrs )
      };
    });
-
   };
+
+  this.idx_one = function( req , res ){
+      User.findOne( { name: req.session.usr.name} )
+      .populate('buckets')
+      .populate('creator')
+      .exec( function( err , thisUsr ){
+       if( err ){
+         console.log(`Error indexing all users from db.`);
+       }else{
+         req.session.usr = thisUsr
+         req.session.save()
+         console.log( `\n\n\n\n\nUpdated user:\n\n` , thisUsr );
+         res.json( thisUsr )
+       };
+     });
+   };
+
 
   this.reqFrnd = function( req , res ){
     console.log('\n\nCHECKING FOR REQ FRIEND',req.body);
@@ -79,7 +95,7 @@ function usrsCtrl(){
       usr.name = usr.name.toLowerCase();
     }
     console.log(`\n!@#!@#!@#!@#!@#!@#!@#\n` , req.session);
-    User.findOne( { name : usr.name , password : usr.pass } , function( err , foundUsr ){
+    User.findOne( { name : usr.name , password : usr.pass } ).populate('buckets').exec( function( err , foundUsr ){
       if( foundUsr ){
         console.log(`FOUND HIM! Loggin' him in...`);
         console.log(foundUsr);

@@ -31,6 +31,11 @@ module.exports = function( app ){
     usrs.idx( req , res );
   });
 
+  app.get( '/update_usr' , function( req , res ){
+    usrs.idx_one( req , res );
+  });
+
+
   app.get( '/logout' , function( req , res ){
     req.session.usr = {};
     res.redirect('/');

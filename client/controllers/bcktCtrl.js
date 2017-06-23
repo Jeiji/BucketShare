@@ -1,5 +1,21 @@
 app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' , '$http',   function( scope , bf , uf , location, http ) {
 
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+
+  if(dd<10) {
+    dd = '0'+dd
+  }
+
+  if(mm<10) {
+    mm = '0'+mm
+  }
+
+  today = yyyy + '-' + mm + '-' + dd;
+  scope.today = today;
+
     // const idx = function(){
     //   bf.idx( function(dataFromFactory ){
     //           scope.buckets = dataFromFactory;
@@ -7,11 +23,6 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     // };
     //
     // idx();
-
-
-
-
-
 
   const idxLogged = function(){
     scope.thisUsr = {};
@@ -23,6 +34,24 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
         location.url('/dashboard')
         console.log('Sorry');
       };
+
+      // // F-Score Rates
+      // for (idx in scope.thisUsr.buckets) {
+      //   console.log(scope.thisUsr.buckets[idx]);
+      //   let diffScore = scope.thisUsr.buckets[idx].diff * .3;
+      //   let timeScore = 1/(scope.thisUsr.buckets[idx].timeRem / 3600000) * 10000000;
+      //   console.log(1/(scope.thisUsr.buckets[idx].timeRem / 3600000) * 10000000);
+      //   let urgScore = Math.pow(scope.thisUsr.buckets[idx].urg , 2);
+      //   let progScore = 0;
+      //   if (scope.thisUsr.buckets[idx].prog) {
+      //     progScore = scope.thisUsr.buckets[idx].prog * .1;
+      //   }
+      //   scope.thisUsr.buckets[idx].fscore = (timeScore+urgScore+progScore-diffScore).toFixed(2)
+      //   console.log('\n\n\n%&?%&?%&?%&?%&?%&? F-SCORE FOR THIS ONE IS...' , scope.thisUsr.buckets[idx].fscore , '!%&?%&?%&?%&?%&?%&?\n\n\n' );
+      //
+      // }
+
+
     });
 
   };
@@ -37,6 +66,15 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
   const idx_U = function(){
     uf.idx( function( dataFromCF ){
       scope.users = dataFromCF
+    });
+  };
+
+  const update_U = function(){
+    http.get( '/update_usr' ).then( function( res ){
+      scope.thisUsr = res.data;
+    }).catch( function( reason ){
+      console.log(reason);
+      console.log(`Handling the rejection...`);
     });
   };
 
@@ -87,8 +125,10 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
     console.log(newBckt);
     bf.addBckt( newBckt , function(){
       idx_U();
+      update_U();
     } );
     idx_U();
+    update_U();
 
 
 
@@ -105,7 +145,7 @@ app.controller('bcktCtrl' , ['$scope' , 'bcktFctry' , 'usrFctry' , '$location' ,
       console.log( ` HERE'S THE NEW TEST THING ${dataFromBF}` );
       console.log(dataFromBF);
     });
-    idx_U();
+    update_U();
   };
 
 

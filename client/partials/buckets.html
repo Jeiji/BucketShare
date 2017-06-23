@@ -3,13 +3,13 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="#">
         <!-- <img alt="Brand" src="..."> -->
-        <p class="">Onus</p>
+        <p class="">Finito</p>
       </a>
     </div>
     <a class=" on-orange btn btn-default navbar-right" href="/logout">LOGOUT</a>
     <ul class="nav navbar-nav">
-        <li class="active"><a href="#!/buckets">HOME <span class="sr-only">(current)</span></a></li>
-        <li><a href="/friends">ADD FRIENDS</a></li>
+      <!--   <li class="active"><a href="#!/buckets">HOME <span class="sr-only">(current)</span></a></li>
+        <li><a href="/friends">ADD FRIENDS</a></li> -->
         <div ng-if="requests.length > 0" class="fr"></div>
         <li class="dropdown">
           <a href="" ng-if="requests.length > 0" class=" dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">NEW FRIEND REQUESTS! <span class="caret"></span></a>
@@ -29,23 +29,36 @@
 <div class="container">
 
 
-    <h1>{{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}'s onus!</h1>
+    <h1>Welcome, {{thisUsr.name.charAt(0).toUpperCase() + thisUsr.name.slice(1)}}!</h1>
 
 
     <div class="container col-xs-12 col-md-6">
 
       <div class="incomplete-tasks">
           <h2>Tasks to do:</h2>
-          <div  ng-repeat='user in users'>
-            <span ng-if='( user._id == thisUsr._id )'>
-              <span ng-repeat='bckt in user.buckets' ng-if="( !bckt.done && bckt.creator._id == thisUsr._id )" >
-                <label class="task" ><input  ng-click='doBckt( bckt )'  type="checkbox" >
-                 <h4>{{ bckt.name }}</h4><h6>{{ bckt.desc }}</h6></label>
+            <ul style="list-style:none ; margin-left:-50px">
 
-              </span>
-            </span>
-          </div>
+              <li ng-repeat="bckt in thisUsr.buckets | orderBy : '-fscore' " ng-if="( !bckt.done )" >
+                <label class="task" ><input  ng-click='doBckt( bckt )'  type="checkbox" >
+                 <h4>{{ bckt.name }}</h4><h6>{{ bckt.desc }}</h6>
+                 <span>Progress: {{ bckt.prog }}%</span>
+                 <span>Difficulty: {{ bckt.diff }}</span>
+                 <span>Importance: {{ bckt.urg }}</span>
+                 <span style="display:block">
+                   Time Left:
+                 <span future="{{bckt.timeRem}}" class="time" compRange="{{ bckt.timeRem - bckt.compTime }}" ></span>
+                 </span>
+                 <span>F-Score: {{bckt.fscore}}</span>
+
+               </label>
+             </li>
+
+          </ul>
       </div>
+
+
+<!--
+  THIS WILL BE ADDED LATER
 
       <div class="incomplete-tasks">
           <h2>Not yours...</h2>
@@ -60,14 +73,14 @@
           </div>
       </div>
 
+    -->
+
       <h3>Completed Tasks</h3>
-      <div class="completed-tasks"  ng-repeat='user in users'>
-        <span ng-if='( user._id == thisUsr._id )'>
-          <span ng-repeat='bckt in user.buckets' ng-if="( bckt.done )" >
-            <input  ng-click='doBckt( bckt )'  type="checkbox" checked >
+      <div class="completed-tasks">
+          <span ng-repeat='bckt in thisUsr.buckets' ng-if="( bckt.done )" >
+            <input  type="checkbox" checked disabled >
              {{ bckt.name }}<br>
           </span>
-        </span>
       </div>
     </div>
 
@@ -79,15 +92,56 @@
 
           Name:
           <input class="resettable" style="display:block" type="text" ng-model="newBckt.name" value="">
-          Description
+
+          Description:
           <textarea class="resettable" style="display:block" ng-model="newBckt.desc" rows="4" cols="80"></textarea>
+
+          Difficulty (1 to 10):
+          <input class="resettable" style="display:block" type="number" ng-model="newBckt.diff" value="">
+
+          Due Date:
+          <input class="resettable" style="display:block" type="date" ng-model="newBckt.timeRem" value="" >
+
+          Estimated Completion Time (Hours):
+          <input class="resettable" style="display:block" type="number" ng-model="newBckt.compTime" value="">
+
+          Importance
+          <select class="resetSelect"  style="display:block" ng-model="newBckt.urg">
+            <option value="2" selected class="defaultSelect">Normal</option>
+            <option value="1" >Meh...</option>
+            <option value="3" >Urgent!</option>
+          </select>
+
+          Progress?
+          <select class="resetSelect"  style="display:block" ng-model="newBckt.prog">
+            <option class="defaultSelect" selected="selected" value="" >None, yet!</option>
+            <option value="10" >10%</option>
+            <option value="20" >20%</option>
+            <option value="30" >30%</option>
+            <option value="30" >40%</option>
+            <option value="30" >50%</option>
+            <option value="30" >60%</option>
+            <option value="30" >70%</option>
+            <option value="30" >80%</option>
+            <option value="30" >90%</option>
+          </select>
+
+
+
+
+
+
+        <!--
           Who will hold you accountable?
           <select class="resetSelect"  style="display:block" ng-model="newBckt.usrId2">
             <option class="defaultSelect" selected="selected" value="" >Just me!</option>
             <option ng-repeat="friend in friends" ng-if="friend.acc==true" value="{{friend.ref._id == thisUsr._id? friend.rec._id : friend.ref._id }}" >{{ friend.ref._id == thisUsr._id? friend.rec.name : friend.ref.name }}</option>
           </select>
+        -->
 
-          <input style="display:block" type="submit" value="Queue Bucket">
+
+
+          <input style="display:block" type="submit" value="Queue Task">
         </form>
     </div>
 <!--
@@ -110,3 +164,52 @@
 
     -->
 </div>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+
+  changeTimes();
+
+  // Convert milliseconds to readable
+  function timeConvert( ms ){
+    // let seconds = parseInt((ms/1000)%60)
+    // let minutes = parseInt((ms/(1000*60))%60)
+    // let hours = parseInt((ms/(1000*60*60))%24)
+
+    var days, hours, minutes, seconds;
+    seconds = Math.floor(ms / 1000);
+    minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    days = Math.floor(hours / 24);
+    hours = hours % 24;
+
+
+
+    return(((String(days).length) < 2 ? '0'+days : days )+' d '+((String(hours).length) < 2 ? '0'+hours : hours )+' h '+((String(minutes).length) < 2 ? '0'+minutes : minutes )+' m'+((String(seconds).length) < 2 ? '0'+seconds : seconds )+'s');
+  }
+
+
+  setInterval(function(){ changeTimes(); }, 1000);
+
+  function changeTimes(){
+    $('.time').each(function(i, obj) {
+
+    //Set time now in MS to what's in the task's attributes
+    let futureTimeMS = Number($(this).attr('future'))
+    let timeLeftMS = futureTimeMS - Date.now();
+    // console.log('future is:',futureTimeMS);
+    // console.log('Time now is:',Date.now());
+
+    // console.log(timeLeftMS);
+    if (timeLeftMS <= 0) {
+      timeLeftMS = 0
+    }
+    $(this).html(timeConvert(timeLeftMS));
+
+    });
+  }
+
+});
+</script>

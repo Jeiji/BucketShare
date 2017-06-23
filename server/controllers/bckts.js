@@ -17,11 +17,59 @@ function ordrsCtrl(){
       }else {
         maker = user;
         console.log('This is the bucket maker: ' , maker );
-        Bckt.create( { name : nb.name , desc : nb.desc , done : '', creator : maker } , function( err , data ){
+
+        // Creating the future timeRem reference
+        let userDate = new Date(nb.timeRem).getTime();
+        console.log('\n\n@#$@#$@#$@#$@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$@#$',Number(userDate));
+        // let futureDate = new Date;
+        let now = Date.now();
+        // Adding hours to the original date
+        // futureDate = now + ( Number(userDate) * 3600000 );
+        // console.log('Adding'+userDate * 3,600,00+'to the date!');
+
+
+
+        // F-Score Rates
+        let diffScore = nb.diff * .3;
+        let timeScore = 1/(userDate / 36) * 10;
+        let compScore = 1/nb.compTime * 10;
+        let urgScore = Math.pow(nb.urg,2);
+        let progScore = 0;
+        if (nb.prog) {
+          progScore = nb.prog * .1;
+        }
+
+        console.log(`
+                      Diff:${diffScore}
+                      Time:${timeScore}
+                      Comp:${compScore}
+                      Importance:${urgScore}
+                      Progress${progScore}
+
+                    `);
+        let fscore = ((urgScore+progScore-diffScore-timeScore-compScore+5)*2).toFixed(2)
+        console.log('\n\n\n%&?%&?%&?%&?%&?%&? F-SCORE FOR THIS ONE IS...' , fscore , '!%&?%&?%&?%&?%&?%&?\n\n\n' );
+
+
+
+
+
+
+        // Setting the attributes for the new task
+        Bckt.create( {  name : nb.name,
+                        desc : nb.desc,
+                        done : '',
+                        diff : nb.diff,
+                        timeRem : userDate,
+                        urg : nb.urg,
+                        prog : ( nb.prog ? nb.prog : 0 ),
+                        compTime: nb.compTime,
+                        fscore : fscore
+                        } , function( err , data ){
           console.log(`******************************`);
           console.log(nb);
           if( err ){
-            console.log(`Error adding new order to DB`);
+            console.log(`Error adding new task to DB`);
             console.log(err);
           }else{
             console.log(`DID IT, adding to users...`);
@@ -39,20 +87,21 @@ function ordrsCtrl(){
 
 
             });
-            if( nb.usrId2 ){
-              console.log(`++++++++++++++++++ DON'T FORGET ME! (${ nb.usrId2 }) ++++++++++++++++++`);
-              User.findOne( { _id : nb.usrId2 } , function( err , user ){
-                if( err ){
-                  console.log(err.errors);
-                }else{
-                  console.log(ab);
-                  user.buckets.push( ab );
-                  console.log(user);
-                  user.save();
-                  console.log(`Now adding to User...`);
-                };
-              });
-            }
+            // Part of Onus addition...
+            // if( nb.usrId2 ){
+            //   console.log(`++++++++++++++++++ DON'T FORGET ME! (${ nb.usrId2 }) ++++++++++++++++++`);
+            //   User.findOne( { _id : nb.usrId2 } , function( err , user ){
+            //     if( err ){
+            //       console.log(err.errors);
+            //     }else{
+            //       console.log(ab);
+            //       user.buckets.push( ab );
+            //       console.log(user);
+            //       user.save();
+            //       console.log(`Now adding to User...`);
+            //     };
+            //   });
+            // }
           };
         });
       }

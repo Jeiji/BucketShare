@@ -39,7 +39,7 @@ require('./server/config/mongoose.js');
 require("./server/config/routes.js")(app);
 
 //---------------- SERVER LISTENER -------------------
-const port = 8000;
+const port = 9000;
 app.listen( process.env.PORT || port  , function(){
-  console.log(`Listening to port ${process.env.PORT} or ${port} for 'Onus'`);
+  console.log(`Listening to port ${process.env.PORT} or ${port} for 'Finito'`);
 });
